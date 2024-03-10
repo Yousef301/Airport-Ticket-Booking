@@ -1,4 +1,6 @@
-﻿using System.Text.RegularExpressions;
+﻿using System.ComponentModel.DataAnnotations;
+using System.Text.RegularExpressions;
+using Airport_Ticket_Booking.Models;
 
 namespace Airport_Ticket_Booking.Services;
 
@@ -28,5 +30,26 @@ public class ValidationService
     public static bool IsValidDateOfBirth(DateTime dateOfBirth)
     {
         return dateOfBirth <= DateTime.Now;
+    }
+
+    public static void ValidateFlight(Flight flight)
+    {
+        var validationContext = new ValidationContext(flight);
+        var validationResults = new List<ValidationResult>();
+
+        bool isValid = Validator.TryValidateObject(flight, validationContext, validationResults, true);
+
+        if (isValid)
+        {
+            Console.WriteLine("Flight is valid.");
+        }
+        else
+        {
+            Console.WriteLine("Flight is invalid. Validation errors:");
+            foreach (var validationResult in validationResults)
+            {
+                Console.WriteLine($"- {validationResult.ErrorMessage}");
+            }
+        }
     }
 }
