@@ -32,7 +32,7 @@ public class ValidationService
         return dateOfBirth <= DateTime.Now;
     }
 
-    public static void ValidateFlight(Flight flight)
+    public static bool ValidateFlight(Flight flight)
     {
         var validationContext = new ValidationContext(flight);
         var validationResults = new List<ValidationResult>();
@@ -41,15 +41,17 @@ public class ValidationService
 
         if (isValid)
         {
-            Console.WriteLine("Flight is valid.");
+            Console.WriteLine($"Flight with id {flight.FlightId} is valid.");
         }
         else
         {
-            Console.WriteLine("Flight is invalid. Validation errors:");
+            Console.WriteLine($"Flight with id {flight.FlightId} is invalid. Validation errors:");
             foreach (var validationResult in validationResults)
             {
                 Console.WriteLine($"- {validationResult.ErrorMessage}");
             }
         }
+
+        return isValid;
     }
 }
