@@ -10,8 +10,61 @@ public class Manager : IUser
     private DateTime _dateOfBirth;
     private int _employeeId;
 
-    public string FullName { get; set; }
-    public string Email { get; set; }
-    public string PhoneNumber { get; set; }
-    public DateTime DateOfBirth { get; set; }
+    public string FullName
+    {
+        get => _fullName;
+        set
+        {
+            if (!ValidationService.IsValidFullName(value))
+            {
+                throw new ArgumentException("Invalid full name format");
+            }
+
+            _fullName = value;
+        }
+    }
+
+    public string Email
+    {
+        get => _email;
+        set
+        {
+            if (!ValidationService.IsValidEmail(value))
+            {
+                throw new ArgumentException("Invalid email address format");
+            }
+
+            _email = value;
+        }
+    }
+
+    public string PhoneNumber
+    {
+        get => _phoneNumber;
+        set
+        {
+            if (!ValidationService.IsValidPhoneNumber(value))
+            {
+                throw new ArgumentException("Invalid phone number format");
+            }
+
+            _phoneNumber = value;
+        }
+    }
+
+    public DateTime DateOfBirth
+    {
+        get => _dateOfBirth;
+        set
+        {
+            if (!ValidationService.IsValidDateOfBirth(value))
+            {
+                throw new ArgumentException("Invalid date of birth");
+            }
+
+            _dateOfBirth = value;
+        }
+    }
+
+    public int EmployeeId { get; init; }
 }
