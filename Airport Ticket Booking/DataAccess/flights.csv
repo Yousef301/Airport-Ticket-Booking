@@ -1,0 +1,11 @@
+﻿FlightId,Price,DepartureCountry,DestinationCountry,DepartureDate,DepartureAirport,ArrivalAirport,Class
+1,250.50,USA,UK,2024-03-15 08:00:00,JFK,LHR,Economy
+2,180.25,France,Germany,2024-03-17 10:30:00,CDG,FRA,Business
+3,300.75,Canada,Japan,2024-03-20 15:45:00,YYZ,NRT,FirstClass
+4,150.00,Spain,Italy,2024-03-22 12:15:00,MAD,FCO,Economy
+5,200.80,Australia,New Zealand,2024-03-25 09:20:00,SID,AKL,Business
+6,350.00,UK,France,2024-03-28 14:00:00,LHR,CDG,FirstClass
+7,220.50,Japan,China,2024-03-30 11:45:00,HND,PEK,Economy
+8,400.75,Germany,USA,2024-04-02 18:30:00,FRA,JFK,FirstClass
+9,180.00,Italy,Spain,2024-04-05 07:20:00,FCO,MAD,Business
+10,280.25,New Zealand,Australia,2024-04-08 10:10:00,AKL,SID,Economy
