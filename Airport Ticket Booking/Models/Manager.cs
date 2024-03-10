@@ -1,70 +1,39 @@
-﻿using Airport_Ticket_Booking.Services;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace Airport_Ticket_Booking.Models;
 
 public class Manager : IUser
 {
-    private string _fullName;
-    private string _email;
-    private string _phoneNumber;
-    private DateTime _dateOfBirth;
-    private int _employeeId;
+    [Required(ErrorMessage = "Full name is required")]
+    [RegularExpression(@"^[a-zA-Z\s]+$", ErrorMessage = "Invalid full name format")]
+    public string FullName { get; set; }
 
-    public string FullName
+    [Required(ErrorMessage = "Email address is required")]
+    [EmailAddress(ErrorMessage = "Invalid email address format")]
+    public string Email { get; set; }
+
+    [Required(ErrorMessage = "Phone number is required")]
+    [RegularExpression(@"^\+?[0-9\s]+$", ErrorMessage = "Invalid phone number format")]
+    public string PhoneNumber { get; set; }
+
+    [Required(ErrorMessage = "Date of birth is required")]
+    [DataType(DataType.Date)]
+    public DateTime DateOfBirth { get; set; }
+
+    [Required(ErrorMessage = "Employee ID is required")]
+    [Range(1, int.MaxValue, ErrorMessage = "Employee ID must be a positive integer")]
+    public int EmployeeId { get; set; }
+
+    public Manager()
     {
-        get => _fullName;
-        set
-        {
-            if (!ValidationService.IsValidFullName(value))
-            {
-                throw new ArgumentException("Invalid full name format");
-            }
-
-            _fullName = value;
-        }
     }
 
-    public string Email
+    public Manager(string fullName, string email, string phoneNumber, DateTime dateOfBirth, int employeeId)
     {
-        get => _email;
-        set
-        {
-            if (!ValidationService.IsValidEmail(value))
-            {
-                throw new ArgumentException("Invalid email address format");
-            }
-
-            _email = value;
-        }
+        FullName = fullName;
+        Email = email;
+        PhoneNumber = phoneNumber;
+        DateOfBirth = dateOfBirth;
+        EmployeeId = employeeId;
     }
-
-    public string PhoneNumber
-    {
-        get => _phoneNumber;
-        set
-        {
-            if (!ValidationService.IsValidPhoneNumber(value))
-            {
-                throw new ArgumentException("Invalid phone number format");
-            }
-
-            _phoneNumber = value;
-        }
-    }
-
-    public DateTime DateOfBirth
-    {
-        get => _dateOfBirth;
-        set
-        {
-            if (!ValidationService.IsValidDateOfBirth(value))
-            {
-                throw new ArgumentException("Invalid date of birth");
-            }
-
-            _dateOfBirth = value;
-        }
-    }
-
-    public int EmployeeId { get; init; }
 }

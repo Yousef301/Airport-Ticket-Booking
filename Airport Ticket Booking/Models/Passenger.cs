@@ -1,99 +1,31 @@
-﻿using Airport_Ticket_Booking.Services;
+﻿using System.ComponentModel.DataAnnotations;
+using Airport_Ticket_Booking.Services;
 
 namespace Airport_Ticket_Booking.Models;
 
 public class Passenger : IUser
 {
-    private string _fullName;
-    private string _email;
-    private string _phoneNumber;
-    private string _passportNumber;
-    private string _nationality;
-    private DateTime _dateOfBirth;
+    [Required(ErrorMessage = "Full name is required")]
+    [RegularExpression(@"^[a-zA-Z\s]+$", ErrorMessage = "Invalid full name format")]
+    public string FullName { get; set; }
 
-    public string FullName
-    {
-        get => _fullName;
-        set
-        {
-            if (!ValidationService.IsValidFullName(value))
-            {
-                throw new ArgumentException("Invalid full name format");
-            }
+    [Required(ErrorMessage = "Email address is required")]
+    [EmailAddress(ErrorMessage = "Invalid email address format")]
+    public string Email { get; set; }
 
-            _fullName = value;
-        }
-    }
+    [Required(ErrorMessage = "Phone number is required")]
+    [RegularExpression(@"^\+?[0-9\s]+$", ErrorMessage = "Invalid phone number format")]
+    public string PhoneNumber { get; set; }
 
-    public string Email
-    {
-        get => _email;
-        set
-        {
-            if (!ValidationService.IsValidEmail(value))
-            {
-                throw new ArgumentException("Invalid email address format");
-            }
+    [Required(ErrorMessage = "Passport number is required")]
+    public string PassportNumber { get; set; }
 
-            _email = value;
-        }
-    }
+    [Required(ErrorMessage = "Nationality is required")]
+    public string Nationality { get; set; }
 
-    public string PhoneNumber
-    {
-        get => _phoneNumber;
-        set
-        {
-            if (!ValidationService.IsValidPhoneNumber(value))
-            {
-                throw new ArgumentException("Invalid phone number format");
-            }
-
-            _phoneNumber = value;
-        }
-    }
-
-    public DateTime DateOfBirth
-    {
-        get => _dateOfBirth;
-        set
-        {
-            if (!ValidationService.IsValidDateOfBirth(value))
-            {
-                throw new ArgumentException("Invalid date of birth");
-            }
-
-            _dateOfBirth = value;
-        }
-    }
-
-    public string PassportNumber
-    {
-        get => _passportNumber;
-        set
-        {
-            if (string.IsNullOrEmpty(value))
-            {
-                throw new ArgumentException("Invalid passport number");
-            }
-
-            _passportNumber = value;
-        }
-    }
-
-    public string Nationality
-    {
-        get => _nationality;
-        set
-        {
-            if (string.IsNullOrEmpty(value))
-            {
-                throw new ArgumentException("Invalid nationality");
-            }
-
-            _nationality = value;
-        }
-    }
+    [Required(ErrorMessage = "Date of birth is required")]
+    [DataType(DataType.Date)]
+    public DateTime DateOfBirth { get; set; }
 
     public Passenger()
     {

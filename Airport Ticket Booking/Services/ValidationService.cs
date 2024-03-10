@@ -32,20 +32,20 @@ public class ValidationService
         return dateOfBirth <= DateTime.Now;
     }
 
-    public static bool ValidateFlight(Flight flight)
+    public static bool ValidateObject<T>(T obj)
     {
-        var validationContext = new ValidationContext(flight);
+        var validationContext = new ValidationContext(obj);
         var validationResults = new List<ValidationResult>();
 
-        bool isValid = Validator.TryValidateObject(flight, validationContext, validationResults, true);
+        bool isValid = Validator.TryValidateObject(obj, validationContext, validationResults, true);
 
         if (isValid)
         {
-            Console.WriteLine($"Flight with id {flight.FlightId} is valid.");
+            Console.WriteLine($"{typeof(T).Name} is valid.");
         }
         else
         {
-            Console.WriteLine($"Flight with id {flight.FlightId} is invalid. Validation errors:");
+            Console.WriteLine($"{typeof(T).Name} is invalid. Validation errors:");
             foreach (var validationResult in validationResults)
             {
                 Console.WriteLine($"- {validationResult.ErrorMessage}");

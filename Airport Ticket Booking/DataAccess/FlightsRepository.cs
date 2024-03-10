@@ -54,7 +54,7 @@ public class FlightsRepository
                 FlightClass = flightClass
             };
 
-            if (ValidationService.ValidateFlight(flight))
+            if (ValidationService.ValidateObject(flight))
             {
                 flights.Add(flight);
             }
