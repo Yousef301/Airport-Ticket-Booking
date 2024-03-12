@@ -1,17 +1,13 @@
-﻿using Airport_Ticket_Booking.DataAccess;
-using Airport_Ticket_Booking.Models;
+﻿using Airport_Ticket_Booking.Models;
+using Airport_Ticket_Booking.UI;
 
 namespace Airport_Ticket_Booking.Services;
 
 public class FlightService
 {
-    public static readonly List<Flight> Flights = FlightsRepository.LoadFlightsFromCsv(
-        "C:\\Users\\shama\\RiderProjects\\Airport Ticket Booking\\Airport Ticket Booking\\Data\\flights.csv");
-
-
     public static List<Flight> SearchForFlight(Dictionary<string, object> parameters)
     {
-        var filteredFlights = Flights.Where(flight =>
+        var filteredFlights = Main.Flights.Where(flight =>
         {
             foreach (var kvp in parameters)
             {
@@ -47,13 +43,18 @@ public class FlightService
 
     public static Flight GetFlightById(int flightId)
     {
-        return Flights.FirstOrDefault(f => f.FlightId == flightId);
+        return Main.Flights.FirstOrDefault(f => f.FlightId == flightId);
+    }
+
+    public static Flight GetFlightByIdAndClass(int flightId, FlightClass flightClass)
+    {
+        return Main.Flights.FirstOrDefault(f => f.FlightId == flightId && f.FlightClass.Contains(flightClass));
     }
 
     public static void GetFlights()
     {
-        Console.WriteLine($"\nAvailable Flights -> {Flights.Count}");
-        foreach (var flight in Flights)
+        Console.WriteLine($"\nAvailable Flights -> {Main.Flights.Count}");
+        foreach (var flight in Main.Flights)
         {
             Console.WriteLine("------------------------------------------");
             Console.WriteLine(flight);

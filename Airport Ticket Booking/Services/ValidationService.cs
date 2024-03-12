@@ -14,7 +14,6 @@ public class ValidationService
 
         if (isValid)
         {
-            Console.WriteLine($"{typeof(T).Name} is valid.");
         }
         else
         {
