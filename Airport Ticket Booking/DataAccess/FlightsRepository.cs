@@ -10,58 +10,66 @@ public class FlightsRepository
     {
         List<Flight> flights = new List<Flight>();
 
-        using TextFieldParser parser = new TextFieldParser(filePath);
-        parser.TextFieldType = FieldType.Delimited;
-        parser.SetDelimiters(",");
-
-        parser.ReadLine();
-
-        while (!parser.EndOfData)
+        try
         {
-            string[] fields = parser.ReadFields();
+            using TextFieldParser parser = new TextFieldParser(filePath);
+            parser.TextFieldType = FieldType.Delimited;
+            parser.SetDelimiters(",");
 
-            int flightId;
-            double price;
-            DateTime departureDate;
-            List<FlightClass> flightClasses = ParseFlightClasses(fields[7]);
+            parser.ReadLine();
 
-            if (!int.TryParse(fields[0], out flightId))
-                flightId = -1;
-
-            if (!double.TryParse(fields[1], out price))
-                price = -1;
-
-            if (!DateTime.TryParse(fields[4], out departureDate))
-                departureDate = DateTime.MinValue;
-
-            if (flightClasses.Count == 0)
-                flightClasses.Add(FlightClass.Unknown);
-
-            string departureCountry = fields[2];
-            string destinationCountry = fields[3];
-            string departureAirport = fields[5];
-            string arrivalAirport = fields[6];
-
-            Flight flight = new Flight
+            while (!parser.EndOfData)
             {
-                FlightId = flightId,
-                Price = price,
-                DepartureCountry = departureCountry,
-                DestinationCountry = destinationCountry,
-                DepartureDate = departureDate,
-                DepartureAirport = departureAirport,
-                ArrivalAirport = arrivalAirport,
-                FlightClass = flightClasses
-            };
+                string[] fields = parser.ReadFields();
 
-            if (ValidationService.ValidateObject(flight))
-            {
-                flights.Add(flight);
+                int flightId;
+                double price;
+                DateTime departureDate;
+                List<FlightClass> flightClasses = ParseFlightClasses(fields[7]);
+
+                if (!int.TryParse(fields[0], out flightId))
+                    flightId = -1;
+
+                if (!double.TryParse(fields[1], out price))
+                    price = -1;
+
+                if (!DateTime.TryParse(fields[4], out departureDate))
+                    departureDate = DateTime.MinValue;
+
+                if (flightClasses.Count == 0)
+                    flightClasses.Add(FlightClass.Unknown);
+
+                string departureCountry = fields[2];
+                string destinationCountry = fields[3];
+                string departureAirport = fields[5];
+                string arrivalAirport = fields[6];
+
+                Flight flight = new Flight
+                {
+                    FlightId = flightId,
+                    Price = price,
+                    DepartureCountry = departureCountry,
+                    DestinationCountry = destinationCountry,
+                    DepartureDate = departureDate,
+                    DepartureAirport = departureAirport,
+                    ArrivalAirport = arrivalAirport,
+                    FlightClass = flightClasses
+                };
+
+                if (ValidationService.ValidateObject(flight))
+                {
+                    flights.Add(flight);
+                }
             }
+        }
+        catch (FileNotFoundException ex)
+        {
+            Console.WriteLine("File not found: " + ex.Message);
         }
 
         return flights;
     }
+
 
     public static List<FlightClass> ParseFlightClasses(string classString)
     {
@@ -82,5 +90,24 @@ public class FlightsRepository
 
         return flightClasses;
     }
-    
+
+    public static void AddFlightsToTheFlightsFile(List<Flight> flights)
+    {
+        string filePath =
+            "C:\\Users\\shama\\RiderProjects\\Airport Ticket Booking\\Airport Ticket Booking\\Data\\flights.csv";
+
+        using StreamWriter writer = File.AppendText(filePath);
+
+
+        foreach (var flight in flights)
+        {
+            var classes = "[" + string.Join("-", flight.FlightClass) + "]";
+
+            string newRecord =
+                $"{flight.FlightId},{flight.Price},{flight.DepartureCountry},{flight.DestinationCountry}," +
+                $"{flight.DepartureDate},{flight.DepartureAirport},{flight.ArrivalAirport},{classes}";
+
+            writer.WriteLine(newRecord);
+        }
+    }
 }
