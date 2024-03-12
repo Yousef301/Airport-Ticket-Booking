@@ -85,13 +85,11 @@ public class Menus
         Console.WriteLine("========================================");
         Console.WriteLine("1. Filter Bookings");
         Console.WriteLine("2. Batch Flight Upload");
-        Console.WriteLine("3. Validate Imported Flight Data");
-        Console.WriteLine("4. Dynamic Model Validation Details");
-        Console.WriteLine("5. Exit");
+        Console.WriteLine("3. Dynamic Model Validation Details");
+        Console.WriteLine("4. Exit");
         Console.WriteLine("========================================");
         Console.Write("Enter your selection: ");
         Console.ResetColor();
-        var option = Console.ReadLine();
     }
 
     public static void FilterBookingsMenu()
@@ -149,5 +147,17 @@ public class Menus
             default:
                 return "Unknown";
         }
+    }
+
+    public static void PersonalInfo()
+    {
+        Console.ForegroundColor = ConsoleColor.Cyan;
+        Console.WriteLine("Personal Info\n\nPlease choose one of the following options:");
+        Console.WriteLine("========================================");
+        Console.WriteLine("1. Full Name");
+        Console.WriteLine("2. Exit");
+        Console.WriteLine("========================================");
+        Console.Write("Enter your selection: ");
+        Console.ResetColor();
     }
 }
