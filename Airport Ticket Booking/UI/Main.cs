@@ -6,6 +6,9 @@ namespace Airport_Ticket_Booking.UI;
 
 public class Main
 {
+    public static readonly List<Flight> Flights = FlightsRepository.LoadFlightsFromCsv(
+        "C:\\Users\\shama\\RiderProjects\\Airport Ticket Booking\\Airport Ticket Booking\\Data\\flights.csv");
+
     public static void Run()
     {
         Menus.LoginMenu();
@@ -63,8 +66,6 @@ public class Main
                                             FlightService.GetFlights();
                                             break;
                                         case "2":
-                                            break;
-                                        case "3":
                                             Console.Write("Enter flight id: ");
                                             var flightId = Console.ReadLine();
 
@@ -73,30 +74,57 @@ public class Main
                                                 flightId = "-1";
                                             }
 
-                                            Flight flight = FlightService.GetFlightById(int.Parse(flightId));
+                                            int fClass;
+                                            bool isValidChoice;
 
-                                            if (flight is not null)
+                                            Console.Clear();
+                                            var flightC = FlightService.GetFlightById(int.Parse(flightId));
+                                            List<FlightClass> flightClasses = new List<FlightClass>();
+
+                                            if (flightC is not null)
                                             {
-                                                BookingsRepository.InsertBooking(passenger.Id, int.Parse(flightId));
+                                                flightClasses = flightC.FlightClass;
+
+                                                Menus.FlightClasses(flightClasses);
+
+                                                var numericValues = flightClasses.Select(fc => (int)fc).ToList();
+
+                                                do
+                                                {
+                                                    string input = Console.ReadLine();
+                                                    isValidChoice = int.TryParse(input, out fClass) &&
+                                                                    numericValues.Contains(fClass - 1);
+
+                                                    if (!isValidChoice)
+                                                    {
+                                                        Console.WriteLine(
+                                                            "Invalid selection. Please enter from the above options.");
+                                                        Console.Write("Enter your selection: ");
+                                                    }
+                                                } while (!isValidChoice);
+
+
+                                                BookingsRepository.InsertBooking(passenger.Id, int.Parse(flightId),
+                                                    (FlightClass)(fClass - 1));
                                             }
                                             else
                                             {
-                                                Console.WriteLine($"Couldn't book Flight {flightId}");
+                                                Console.WriteLine($"Flight {flightId} is not available.");
                                             }
 
                                             break;
-                                        case "4":
+                                        case "3":
                                             break;
                                         default:
                                             Log.InvalidInputMessage(
-                                                "Invalid input. Please enter 1, 2, 3 or 4 to select an option from the menu.");
+                                                "Invalid input. Please enter 1, 2 or 3 to select an option from the menu.");
                                             break;
                                     }
 
                                     Console.ForegroundColor = ConsoleColor.Cyan;
                                     Console.Write("Enter your selection: ");
                                     Console.ResetColor();
-                                } while (Int32.Parse(selection) != 4);
+                                } while (Int32.Parse(selection) != 3);
 
                                 break;
                             case "2":
@@ -222,11 +250,11 @@ public class Main
 
                                             if (removed)
                                             {
-                                                Console.WriteLine("Booking removed successfully.");
+                                                Console.WriteLine($"Book {flightId} cancelled successfully.");
                                             }
                                             else
                                             {
-                                                Console.WriteLine("Couldn't remove the booking.");
+                                                Console.WriteLine($"Book {flightId} cancelled unsuccessfully.");
                                             }
 
                                             break;
