@@ -1,38 +1,46 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.IO;
 using Airport_Ticket_Booking.Models;
 
-namespace Airport_Ticket_Booking.Services;
-
-public class ValidationService
+namespace Airport_Ticket_Booking.Services
 {
-    public static bool ValidateObject<T>(T obj)
+    public class ValidationService
     {
-        var validationContext = new ValidationContext(obj);
-        var validationResults = new List<ValidationResult>();
-
-        bool isValid = Validator.TryValidateObject(obj, validationContext, validationResults, true);
-
-        if (isValid)
+        public static bool ValidateObject<T>(T obj)
         {
-        }
-        else
-        {
-            if (typeof(T) == typeof(Flight))
+            var validationContext = new ValidationContext(obj);
+            var validationResults = new List<ValidationResult>();
+
+            bool isValid = Validator.TryValidateObject(obj, validationContext, validationResults, true);
+
+            if (!isValid)
             {
-                Flight flight = obj as Flight;
-                Console.WriteLine($"{typeof(T).Name} {flight.FlightId} is invalid. Validation errors:");
-            }
-            else
-            {
-                Console.WriteLine($"{typeof(T).Name} is invalid. Validation errors:");
+                using StreamWriter writer =
+                    new StreamWriter(
+                        "C:\\Users\\shama\\RiderProjects\\Airport Ticket Booking\\Airport Ticket Booking\\Logs\\LoadedFlightsLog.txt",
+                        true);
+                if (typeof(T) == typeof(Flight))
+                {
+                    Flight flight = obj as Flight;
+                    writer.WriteLine(
+                        $"{DateTime.Now}: {typeof(T).Name} {flight.FlightId} is invalid. Validation errors:");
+                }
+                else
+                {
+                    writer.WriteLine($"{DateTime.Now}: {typeof(T).Name} is invalid. Validation errors:");
+                }
+
+                foreach (var validationResult in validationResults)
+                {
+                    writer.WriteLine($"- {validationResult.ErrorMessage}");
+                }
+
+                writer.WriteLine();
             }
 
-            foreach (var validationResult in validationResults)
-            {
-                Console.WriteLine($"- {validationResult.ErrorMessage}");
-            }
+            return isValid;
         }
-
-        return isValid;
     }
 }
