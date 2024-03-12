@@ -1,8 +1,9 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using Airport_Ticket_Booking.Models;
 
 namespace Airport_Ticket_Booking.CustomAttribute;
 
-public class CustomAttributes : ValidationAttribute
+public class CustomAttribues : ValidationAttribute
 {
     public override bool IsValid(object value)
     {
@@ -16,20 +17,16 @@ public class CustomAttributes : ValidationAttribute
 }
 
 [AttributeUsage(AttributeTargets.Property | AttributeTargets.Field | AttributeTargets.Parameter)]
-public class NotEqualToAttribute : ValidationAttribute
+public class FlightClassValidatorAttribute : ValidationAttribute
 {
-    private readonly object _comparisonValue;
-
-    public NotEqualToAttribute(object comparisonValue)
-    {
-        _comparisonValue = comparisonValue;
-    }
-
     protected override ValidationResult IsValid(object value, ValidationContext validationContext)
     {
-        if (value != null && value.Equals(_comparisonValue))
+        if (value is List<FlightClass> flightClasses)
         {
-            return new ValidationResult(ErrorMessage ?? $"Value cannot be {_comparisonValue.ToString()}.");
+            if (flightClasses.Contains(FlightClass.Unknown))
+            {
+                return new ValidationResult(ErrorMessage);
+            }
         }
 
         return ValidationResult.Success;
