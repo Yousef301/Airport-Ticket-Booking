@@ -6,6 +6,9 @@ namespace Airport_Ticket_Booking.DataAccess;
 
 public class BookingsRepository
 {
+    private static string filePath =
+        "C:\\Users\\shama\\RiderProjects\\Airport Ticket Booking\\Airport Ticket Booking\\Data\\bookings.csv";
+
     public static List<Bookings> LoadBookingsList(string filePath)
     {
         List<Bookings> bookings = new List<Bookings>();
@@ -32,5 +35,101 @@ public class BookingsRepository
         }
 
         return bookings;
+    }
+
+    public static void InsertBooking(string pid, int fid)
+    {
+        Console.WriteLine();
+
+        try
+        {
+            string dataLine = $"{pid},{fid}";
+
+            using (StreamWriter writer =
+                   new StreamWriter(
+                       filePath,
+                       true))
+            {
+                writer.WriteLine(dataLine);
+            }
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"An error occurred: {ex.Message}");
+        }
+    }
+
+    public static List<Bookings> GetBookingsForPassenger(Passenger passenger)
+    {
+        List<Bookings> bookings = new List<Bookings>();
+
+        try
+        {
+            string[] lines = File.ReadAllLines(filePath);
+
+            foreach (string line in lines)
+            {
+                string[] fields = line.Split(',');
+                if (fields.Length >= 2)
+                {
+                    string pid = fields[0];
+                    int fid;
+                    if (int.TryParse(fields[1], out fid))
+                    {
+                        if (pid.Equals(passenger.Id))
+                        {
+                            Flight flight = FlightService.GetFlightById(fid);
+                            bookings.Add(new Bookings(passenger, flight));
+                        }
+                    }
+                }
+            }
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"An error occurred: {ex.Message}");
+        }
+
+        return bookings;
+    }
+
+    public static bool RemoveBooking(string targetPid, int targetFid)
+    {
+        try
+        {
+            List<string> updatedLines = new List<string>();
+            bool bookingRemoved = false;
+
+            string[] lines = File.ReadAllLines(filePath);
+
+            foreach (string line in lines)
+            {
+                string[] fields = line.Split(',');
+                if (fields.Length >= 2)
+                {
+                    string pid = fields[0];
+                    int fid;
+                    if (int.TryParse(fields[1], out fid))
+                    {
+                        if (pid.Equals(targetPid) && fid == targetFid)
+                        {
+                            bookingRemoved = true;
+                            continue;
+                        }
+                    }
+                }
+
+                updatedLines.Add(line);
+            }
+
+            File.WriteAllLines(filePath, updatedLines);
+
+            return bookingRemoved;
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"An error occurred: {ex.Message}");
+            return false;
+        }
     }
 }
