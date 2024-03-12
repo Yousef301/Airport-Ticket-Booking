@@ -20,7 +20,7 @@ public class Flight
     public string DestinationCountry { get; set; }
 
     [Required(ErrorMessage = "Departure Date is required.")]
-    [DateValidator(ErrorMessage = "Departure Date must be in the future.")]
+    [CustomAttribues(ErrorMessage = "Departure Date must be in the future.")]
     public DateTime DepartureDate { get; set; }
 
     [Required(ErrorMessage = "Departure Airport is required.")]
