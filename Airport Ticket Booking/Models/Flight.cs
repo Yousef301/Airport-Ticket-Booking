@@ -20,7 +20,7 @@ public class Flight
     public string DestinationCountry { get; set; }
 
     [Required(ErrorMessage = "Departure Date is required.")]
-    [FutureDate(ErrorMessage = "Departure Date must be in the future.")]
+    [DateValidator(ErrorMessage = "Departure Date must be in the future.")]
     public DateTime DepartureDate { get; set; }
 
     [Required(ErrorMessage = "Departure Airport is required.")]
@@ -30,13 +30,14 @@ public class Flight
     public string ArrivalAirport { get; set; }
 
     [Required(ErrorMessage = "Flight Class is required.")]
-    public FlightClass FlightClass { get; set; }
+    [FlightClassValidator(ErrorMessage = "Flight Class cannot be Unknown.")]
+    public List<FlightClass> FlightClass { get; set; }
 
     public override string ToString()
     {
         return
             $"Flight Id: {FlightId}\nPrice: {Price}\nDeparture Country -> {DepartureCountry}, Destination Country ->  " +
             $"{DestinationCountry}\nDeparture Date: {DepartureDate}\nDeparture Airport -> {DepartureAirport}," +
-            $" Arrival Airport -> {ArrivalAirport}\nFlight Class: {FlightClass}";
+            $" Arrival Airport -> {ArrivalAirport}";
     }
 }
