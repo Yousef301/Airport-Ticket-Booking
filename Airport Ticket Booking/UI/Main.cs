@@ -6,7 +6,7 @@ namespace Airport_Ticket_Booking.UI;
 
 public class Main
 {
-    public static readonly List<Flight> Flights = FlightsRepository.LoadFlightsFromCsv(
+    public static List<Flight> Flights = FlightsRepository.LoadFlightsFromCsv(
         "C:\\Users\\shama\\RiderProjects\\Airport Ticket Booking\\Airport Ticket Booking\\Data\\flights.csv");
 
     public static void Run()
@@ -278,6 +278,7 @@ public class Main
                                 } while (Int32.Parse(selection2) != 3);
 
                                 break;
+
                             case "4":
                                 Environment.Exit(0);
                                 break;
@@ -290,14 +291,58 @@ public class Main
                         Console.ForegroundColor = ConsoleColor.Cyan;
                         Console.Write("Enter your selection: ");
                         Console.ResetColor();
-                    } while (Int32.Parse(option) != 4);
+                    } while (Int32.Parse(option) != 5);
                 }
                 else if (user.GetType() == typeof(Manager))
                 {
                     Manager manager = (Manager)user;
                     valid = true;
-                    Console.Clear();
-                    Menus.ManagerMenu();
+
+
+                    var option = "0";
+
+                    do
+                    {
+                        Menus.ManagerMenu();
+
+                        option = Console.ReadLine();
+
+                        if (option == "" || !int.TryParse(option, out _))
+                        {
+                            option = "0";
+                        }
+
+                        switch (option)
+                        {
+                            case "1":
+                                break;
+                            case "2":
+                                Console.WriteLine("Enter file full path:");
+                                var filePath = Console.ReadLine();
+
+                                if (File.Exists(filePath))
+                                {
+                                    var flights = FlightsRepository.LoadFlightsFromCsv(filePath);
+                                    Console.WriteLine(
+                                        @"Check 'C:\Users\shama\RiderProjects\Airport Ticket Booking\Airport Ticket Booking\Logs\LoadedFlightsLog.txt' for validation details.");
+
+                                    FlightsRepository.AddFlightsToTheFlightsFile(flights);
+                                }
+                                else Console.WriteLine("File does not exist or the path is invalid.");
+
+                                break;
+                            case "3":
+                                DynamicModelValidation.GenerateValidationConstraints(typeof(Flight));
+                                break;
+                            case "4":
+                                Environment.Exit(0);
+                                break;
+                            default:
+                                Log.InvalidInputMessage(
+                                    "Invalid input. Please enter 1, 2, 3 or 4 to select an option from the menu.");
+                                break;
+                        }
+                    } while (Int32.Parse(option) != 4);
                 }
             }
             else Console.WriteLine("Invalid Id");
