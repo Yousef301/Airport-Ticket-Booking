@@ -5,7 +5,7 @@ namespace Airport_Ticket_Booking.Services;
 
 public class FlightService
 {
-    public static List<Flight> Flights = FlightsRepository.LoadFlightsFromCsv(
+    public static readonly List<Flight> Flights = FlightsRepository.LoadFlightsFromCsv(
         "C:\\Users\\shama\\RiderProjects\\Airport Ticket Booking\\Airport Ticket Booking\\Data\\flights.csv");
 
 
@@ -48,5 +48,15 @@ public class FlightService
     public static Flight GetFlightById(int flightId)
     {
         return Flights.FirstOrDefault(f => f.FlightId == flightId);
+    }
+
+    public static void GetFlights()
+    {
+        Console.WriteLine($"\nAvailable Flights -> {Flights.Count}");
+        foreach (var flight in Flights)
+        {
+            Console.WriteLine("------------------------------------------");
+            Console.WriteLine(flight);
+        }
     }
 }
