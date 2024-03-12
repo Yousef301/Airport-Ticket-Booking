@@ -1,4 +1,6 @@
-﻿namespace Airport_Ticket_Booking.UI;
+﻿using Airport_Ticket_Booking.Models;
+
+namespace Airport_Ticket_Booking.UI;
 
 public class Menus
 {
@@ -37,9 +39,8 @@ public class Menus
         Console.WriteLine("Book a Flight Menu\n\nPlease choose one of the following options:");
         Console.WriteLine("========================================");
         Console.WriteLine("1. View all Flights");
-        Console.WriteLine("2. Search for Specific Flight");
-        Console.WriteLine("3. Book a Flight");
-        Console.WriteLine("4. Back");
+        Console.WriteLine("2. Book a Flight");
+        Console.WriteLine("3. Back");
         Console.WriteLine("========================================");
         Console.Write("Enter your selection: ");
         Console.ResetColor();
@@ -111,7 +112,6 @@ public class Menus
         Console.WriteLine("========================================");
         Console.Write("Enter your selection: ");
         Console.ResetColor();
-        var option = Console.ReadLine();
     }
 
     public static void BatchFlightUploadMenu()
@@ -120,5 +120,34 @@ public class Menus
         Console.WriteLine("Batch Flight Upload\n\nPlease enter flights file full path: ");
         Console.ResetColor();
         var option = Console.ReadLine();
+    }
+
+    public static void FlightClasses(List<FlightClass> availableClasses)
+    {
+        Console.ForegroundColor = ConsoleColor.Cyan;
+        Console.WriteLine("Available Flight Classes:\n");
+
+        foreach (FlightClass flightClass in availableClasses)
+        {
+            Console.WriteLine(GetClassDescription(flightClass));
+        }
+
+        Console.Write("Enter your selection: ");
+        Console.ResetColor();
+    }
+
+    public static string GetClassDescription(FlightClass flightClass)
+    {
+        switch (flightClass)
+        {
+            case FlightClass.Economy:
+                return "1. Economy";
+            case FlightClass.Business:
+                return "2. Business";
+            case FlightClass.FirstClass:
+                return "3. FirstClass";
+            default:
+                return "Unknown";
+        }
     }
 }
