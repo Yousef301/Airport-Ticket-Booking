@@ -1,0 +1,33 @@
+3/12/2024 9:23:08 PM: Flight 20 is invalid. Validation errors:
+- Flight Class cannot be Unknown.
+
+3/12/2024 9:23:45 PM: Flight 12 is invalid. Validation errors:
+- Departure Date must be in the future.
+
+3/12/2024 9:23:45 PM: Flight 20 is invalid. Validation errors:
+- Flight Class cannot be Unknown.
+
+3/12/2024 9:35:22 PM: Flight 12 is invalid. Validation errors:
+- Departure Date must be in the future.
+
+3/12/2024 9:35:22 PM: Flight 20 is invalid. Validation errors:
+- Flight Class cannot be Unknown.
+
+3/12/2024 9:35:54 PM: Flight 12 is invalid. Validation errors:
+- Departure Date must be in the future.
+
+3/12/2024 9:35:54 PM: Flight 20 is invalid. Validation errors:
+- Flight Class cannot be Unknown.
+
+3/12/2024 9:40:40 PM: Flight 12 is invalid. Validation errors:
+- Departure Date must be in the future.
+
+3/12/2024 9:40:40 PM: Flight 20 is invalid. Validation errors:
+- Flight Class cannot be Unknown.
+
+3/12/2024 9:44:03 PM: Flight 12 is invalid. Validation errors:
+- Departure Date must be in the future.
+
+3/12/2024 9:44:03 PM: Flight 20 is invalid. Validation errors:
+- Flight Class cannot be Unknown.
+
