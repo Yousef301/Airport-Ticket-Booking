@@ -1,4 +1,9 @@
-PID,FID
-P001,11
-P001,9
-P002,11
+PID,FID,Class
+P001,11,Economy
+P001,9,FirstClass
+P002,11,FirstClass
+P001,11, Economy
+P001,11, Economy
+P001,1, Business
+P003,3, FirstClass
+P003,1, Economy

@@ -1,0 +1,10 @@
+FlightId,Price,DepartureCountry,DestinationCountry,DepartureDate,DepartureAirport,ArrivalAirport,FlightClass
+12,320.50,USA,France,2023-04-10 08:45:00,JFK,CDG,[Business-FirstClass]
+13,210.25,UK,Germany,2024-04-12 11:20:00,LHR,FRA,[Economy-Business]
+14,290.75,Japan,China,2024-04-15 14:30:00,NRT,PEK,[Business-FirstClass]
+15,180.00,Germany,Spain,2024-04-18 17:55:00,FRA,MAD,[Economy-Business]
+16,400.80,Italy,USA,2024-04-20 09:40:00,FCO,JFK,[FirstClass]
+17,250.00,France,Canada,2024-04-23 13:15:00,CDG,YYZ,[Economy-Business]
+18,350.50,China,Japan,2024-04-26 16:20:00,PEK,HND,[FirstClass]
+19,220.25,Spain,Italy,2024-04-28 19:00:00,MAD,FCO,[Economy-Business]
+20,290.75,New Zealand,Australia,2024-05-01 08:30:00,AKL,SID,
