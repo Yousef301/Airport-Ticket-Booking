@@ -23,7 +23,7 @@ public class FlightsRepository
             int flightId;
             double price;
             DateTime departureDate;
-            FlightClass flightClass;
+            List<FlightClass> flightClasses = ParseFlightClasses(fields[7]);
 
             if (!int.TryParse(fields[0], out flightId))
                 flightId = -1;
@@ -34,8 +34,8 @@ public class FlightsRepository
             if (!DateTime.TryParse(fields[4], out departureDate))
                 departureDate = DateTime.MinValue;
 
-            if (!Enum.TryParse(fields[7], out flightClass))
-                flightClass = FlightClass.Economy;
+            if (flightClasses.Count == 0)
+                flightClasses.Add(FlightClass.Unknown);
 
             string departureCountry = fields[2];
             string destinationCountry = fields[3];
@@ -51,7 +51,7 @@ public class FlightsRepository
                 DepartureDate = departureDate,
                 DepartureAirport = departureAirport,
                 ArrivalAirport = arrivalAirport,
-                FlightClass = flightClass
+                FlightClass = flightClasses
             };
 
             if (ValidationService.ValidateObject(flight))
@@ -62,4 +62,25 @@ public class FlightsRepository
 
         return flights;
     }
+
+    public static List<FlightClass> ParseFlightClasses(string classString)
+    {
+        string[] classNames = classString
+            .Replace("[", "")
+            .Replace("]", "")
+            .Split('-');
+
+        List<FlightClass> flightClasses = new List<FlightClass>();
+
+        foreach (var className in classNames)
+        {
+            if (Enum.TryParse(className.Trim(), out FlightClass flightClass))
+            {
+                flightClasses.Add(flightClass);
+            }
+        }
+
+        return flightClasses;
+    }
+    
 }
