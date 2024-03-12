@@ -3,7 +3,7 @@ using Airport_Ticket_Booking.Models;
 
 namespace Airport_Ticket_Booking.CustomAttribute;
 
-public class CustomAttribues : ValidationAttribute
+public class FutureDateAttribues : ValidationAttribute
 {
     public override bool IsValid(object value)
     {
