@@ -48,7 +48,7 @@ public class Menus
     public static void SearchForFlightMenu()
     {
         Console.ForegroundColor = ConsoleColor.Cyan;
-        Console.WriteLine("Search For Flight\n\nPlease choose one of the following options:");
+        Console.WriteLine("Search For Flight\n\nPlease choose one of the following options to search by:");
         Console.WriteLine("========================================");
         Console.WriteLine("1. Price");
         Console.WriteLine("2. Departure Country");
@@ -57,11 +57,11 @@ public class Menus
         Console.WriteLine("5. Departure Airport");
         Console.WriteLine("6. Arrival Airport");
         Console.WriteLine("7. Class");
-        Console.WriteLine("8. Exit");
+        Console.WriteLine("8. Search");
+        Console.WriteLine("9. Exit");
         Console.WriteLine("========================================");
         Console.Write("Enter your selection: ");
         Console.ResetColor();
-        var option = Console.ReadLine();
     }
 
     public static void ManageBookingsMenu()

@@ -33,10 +33,18 @@ public class Flight
     [FlightClassValidator(ErrorMessage = "Flight Class cannot be Unknown.")]
     public List<FlightClass> FlightClass { get; set; }
 
+    public static void ViewFlights(List<Flight> flights)
+    {
+        foreach (var flight in flights)
+        {
+            Console.WriteLine(flight.ToString());
+        }
+    }
+
     public override string ToString()
     {
         string flightClasses = string.Join(", ", FlightClass.Select(fc => fc.ToString()));
-        
+
         return
             $"Flight Id: {FlightId}\nPrice: {Price}\nDeparture Country -> {DepartureCountry}, Destination Country ->  " +
             $"{DestinationCountry}\nDeparture Date: {DepartureDate}\nDeparture Airport -> {DepartureAirport}," +
