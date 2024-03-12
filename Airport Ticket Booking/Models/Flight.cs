@@ -35,9 +35,11 @@ public class Flight
 
     public override string ToString()
     {
+        string flightClasses = string.Join(", ", FlightClass.Select(fc => fc.ToString()));
+        
         return
             $"Flight Id: {FlightId}\nPrice: {Price}\nDeparture Country -> {DepartureCountry}, Destination Country ->  " +
             $"{DestinationCountry}\nDeparture Date: {DepartureDate}\nDeparture Airport -> {DepartureAirport}," +
-            $" Arrival Airport -> {ArrivalAirport}";
+            $" Arrival Airport -> {ArrivalAirport}\nAvailable Classes -> {flightClasses}";
     }
 }

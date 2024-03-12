@@ -11,6 +11,14 @@ public class Bookings
         Flight = flight;
     }
 
+    public static void ViewBookings(List<Bookings> bookings)
+    {
+        foreach (var booking in bookings)
+        {
+            Console.WriteLine(booking.ToString());
+        }
+    }
+
     public override string ToString()
     {
         return $"Passenger name -> {Passenger.FullName}\nFlight Details:\n{Flight}";
