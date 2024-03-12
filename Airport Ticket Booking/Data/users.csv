@@ -1,0 +1,6 @@
+﻿Id,FullName,Email,PhoneNumber,PassportNumber,Nationality,DateOfBirth,EmployeeId
+P001,David Lee,davidlee@example.com,1234567890,XYZ789012,Germany,1995-12-28,None
+p002,Sarah Johnson,sarahjohnson@example.com,+1122334455,JKL456789,France,1980-09-18,None
+P003,Emily Wang,emilywang@example.com,9998887776,+MNO123456,China,1992-06-30,None
+M001,John Doe,johndoe@example.com,+123456789,None,None,1990-05-15,1001
+m002,Jane Smith,janesmith@example.com,987654321,None,None,1985-10-20,1002
