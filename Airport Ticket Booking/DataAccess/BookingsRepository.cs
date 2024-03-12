@@ -28,22 +28,23 @@ public class BookingsRepository
 
 
             Int32.TryParse(fields[1], out int flightId);
+            Enum.TryParse(fields[2], true, out FlightClass flightClassValue);
 
             Flight flight = FlightService.GetFlightById(flightId);
 
-            bookings.Add(new Bookings((Passenger)passenger, flight));
+            bookings.Add(new Bookings((Passenger)passenger, flight, flightClassValue));
         }
 
         return bookings;
     }
 
-    public static void InsertBooking(string pid, int fid)
+    public static void InsertBooking(string pid, int fid, FlightClass flightClass)
     {
         Console.WriteLine();
 
         try
         {
-            string dataLine = $"{pid},{fid}";
+            string dataLine = $"{pid},{fid}, {flightClass}";
 
             using (StreamWriter writer =
                    new StreamWriter(
@@ -70,16 +71,17 @@ public class BookingsRepository
             foreach (string line in lines)
             {
                 string[] fields = line.Split(',');
-                if (fields.Length >= 2)
+                if (fields.Length >= 3)
                 {
                     string pid = fields[0];
                     int fid;
-                    if (int.TryParse(fields[1], out fid))
+                    if (int.TryParse(fields[1], out fid) &&
+                        Enum.TryParse(fields[2], true, out FlightClass flightClassValue))
                     {
                         if (pid.Equals(passenger.Id))
                         {
                             Flight flight = FlightService.GetFlightById(fid);
-                            bookings.Add(new Bookings(passenger, flight));
+                            bookings.Add(new Bookings(passenger, flight, flightClassValue));
                         }
                     }
                 }

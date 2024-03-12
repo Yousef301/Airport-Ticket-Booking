@@ -5,8 +5,11 @@ public class Bookings
     public Passenger Passenger { get; set; }
     public Flight Flight { get; set; }
 
-    public Bookings(Passenger passenger, Flight flight)
+    public FlightClass FlightClass { get; set; }
+
+    public Bookings(Passenger passenger, Flight flight, FlightClass flightClass)
     {
+        FlightClass = flightClass;
         Passenger = passenger;
         Flight = flight;
     }
@@ -21,6 +24,6 @@ public class Bookings
 
     public override string ToString()
     {
-        return $"Passenger name -> {Passenger.FullName}\nFlight Details:\n{Flight}";
+        return $"Passenger name -> {Passenger.FullName}\nFlight Details:\n{Flight}\nFlight Class -> {FlightClass}";
     }
 }
