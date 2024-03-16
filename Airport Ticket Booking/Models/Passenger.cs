@@ -17,18 +17,6 @@ public class Passenger : User
     [Required(ErrorMessage = "Nationality is required")]
     public string Nationality { get; set; }
 
-    public Passenger()
-    {
-    }
-
-    public Passenger(string id, string fullName, string email, string passportNumber, string nationality,
-        string phoneNumber, DateTime dateOfBirth) : base(fullName, email, phoneNumber, dateOfBirth)
-    {
-        Id = id;
-        PassportNumber = passportNumber;
-        Nationality = nationality;
-    }
-
     public override string ToString()
     {
         return base.ToString() + $"\nPassport number -> {PassportNumber}\nNationality -> {Nationality}";

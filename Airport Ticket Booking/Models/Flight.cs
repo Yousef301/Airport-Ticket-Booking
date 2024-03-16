@@ -20,7 +20,7 @@ public class Flight
     public string DestinationCountry { get; set; }
 
     [Required(ErrorMessage = "Departure Date is required.")]
-    [FutureDateAttributes(ErrorMessage = "Departure Date must be in the future.")]
+    [FutureDateValidationAttributes(ErrorMessage = "Departure Date must be in the future.")]
     public DateTime DepartureDate { get; set; }
 
     [Required(ErrorMessage = "Departure Airport is required.")]
@@ -30,7 +30,7 @@ public class Flight
     public string ArrivalAirport { get; set; }
 
     [Required(ErrorMessage = "Flight Class is required.")]
-    [FlightClassValidator(ErrorMessage = "Flight Class cannot be Unknown.")]
+    [FlightClassValidation(ErrorMessage = "Flight Class cannot be Unknown.")]
     public List<FlightClass> FlightClass { get; set; }
 
     public static void ViewFlights(List<Flight> flights)
@@ -41,15 +41,13 @@ public class Flight
         }
     }
 
-    public static List<Flight> ConcatFlights(List<Flight> f1, List<Flight> f2) => f1.Concat(f2).ToList();
-
     public override string ToString()
     {
         string flightClasses = string.Join(", ", FlightClass.Select(fc => fc.ToString()));
 
         return
-            $"Flight Id: {FlightId}\nPrice: {Price}\nDeparture Country -> {DepartureCountry}, Destination Country ->  " +
+            $"Flight Id: {FlightId}\nPrice: {Price:C}\nDeparture Country -> {DepartureCountry}, Destination Country ->  " +
             $"{DestinationCountry}\nDeparture Date: {DepartureDate}\nDeparture Airport -> {DepartureAirport}," +
-            $" Arrival Airport -> {ArrivalAirport}\nAvailable Classes -> {flightClasses}";
+            $" Arrival Airport -> {ArrivalAirport}\nAvailable Classes -> {flightClasses}\n";
     }
 }
