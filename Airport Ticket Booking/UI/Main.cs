@@ -6,8 +6,9 @@ namespace Airport_Ticket_Booking.UI;
 
 public class Main
 {
-    public static List<Flight> Flights = FlightsRepository.LoadFlightsFromCsv(
-        "C:\\Users\\shama\\RiderProjects\\Airport Ticket Booking\\Airport Ticket Booking\\Data\\flights.csv");
+    public static List<Flight> Flights = FlightsRepository.GetFlights("");
+
+    public static List<Bookings> AllBookings = BookingsRepository.GetBookings();
 
     public static void Run()
     {
@@ -19,8 +20,7 @@ public class Main
         {
             var id = Console.ReadLine();
 
-            var user = UserRepository.GetPersonById(id,
-                "C:\\Users\\shama\\RiderProjects\\Airport Ticket Booking\\Airport Ticket Booking\\Data\\users.csv");
+            var user = UserRepository.GetPersonById(id);
 
             if (user is not null)
             {
@@ -128,95 +128,7 @@ public class Main
 
                                 break;
                             case "2":
-                                Console.Clear();
-                                var selection1 = 0;
-                                Dictionary<string, object> filter = new Dictionary<string, object>();
-
-                                do
-                                {
-                                    Menus.SearchForFlightMenu();
-                                    int.TryParse(Console.ReadLine(), out selection1);
-
-                                    switch (selection1)
-                                    {
-                                        case 1:
-                                            var price = EnterValue("Price");
-
-                                            if (double.TryParse(price, out double pri))
-                                            {
-                                                if (!filter.ContainsKey("Price"))
-                                                {
-                                                    filter.Add("Price", pri);
-                                                }
-                                                else
-                                                {
-                                                    filter["Price"] = pri;
-                                                }
-                                            }
-
-                                            break;
-                                        case 2:
-                                            UpdateFilter("DepartureCountry", "Departure Country", filter);
-                                            break;
-                                        case 3:
-                                            UpdateFilter("DestinationCountry", "Destination Country", filter);
-                                            break;
-                                        case 4:
-                                            var departureDate = EnterValue("Departure Date (yyyy-MM-dd)");
-
-                                            if (DateTime.TryParseExact(departureDate, "yyyy-MM-dd", null,
-                                                    System.Globalization.DateTimeStyles.None, out DateTime parsedDate))
-                                            {
-                                                if (!filter.ContainsKey("DepartureDate"))
-                                                {
-                                                    filter.Add("DepartureDate", parsedDate);
-                                                }
-                                                else
-                                                {
-                                                    filter["DepartureDate"] = parsedDate;
-                                                }
-                                            }
-
-                                            break;
-                                        case 5:
-                                            UpdateFilter("DepartureAirport", "Departure Airport", filter);
-                                            break;
-                                        case 6:
-                                            UpdateFilter("ArrivalAirport", "Arrival Airport", filter);
-                                            break;
-                                        case 7:
-                                            var flightClass = EnterValue("Flight Class");
-
-                                            if (Enum.TryParse(flightClass, true, out FlightClass flightClassValue))
-                                            {
-                                                if (!filter.ContainsKey("FlightClass"))
-                                                {
-                                                    filter.Add("FlightClass", flightClassValue);
-                                                }
-                                                else
-                                                {
-                                                    filter["FlightClass"] = flightClassValue;
-                                                }
-                                            }
-
-                                            break;
-                                        case 8:
-                                            ViewFilteredFlights(filter);
-                                            break;
-                                        case 9:
-                                            break;
-                                        default:
-                                            Log.InvalidInputMessage(
-                                                "Invalid input. Please enter a number between 1 and 9.");
-                                            break;
-                                    }
-
-                                    Console.ForegroundColor = ConsoleColor.Cyan;
-                                    Console.Write("Enter your selection: ");
-                                    Console.ResetColor();
-                                } while (selection1 != 9);
-
-
+                                SearchForFlight();
                                 break;
                             case "3":
                                 Console.Clear();
@@ -315,14 +227,15 @@ public class Main
                         switch (option)
                         {
                             case "1":
+                                FilterBookings();
                                 break;
                             case "2":
-                                Console.WriteLine("Enter file full path:");
+                                Menus.BatchFlightUploadMenu();
                                 var filePath = Console.ReadLine();
 
                                 if (File.Exists(filePath))
                                 {
-                                    var flights = FlightsRepository.LoadFlightsFromCsv(filePath);
+                                    var flights = FlightsRepository.GetFlights(filePath);
                                     Console.WriteLine(
                                         @"Check 'C:\Users\shama\RiderProjects\Airport Ticket Booking\Airport Ticket Booking\Logs\LoadedFlightsLog.txt' for validation details.");
 
@@ -353,31 +266,182 @@ public class Main
         } while (!valid);
     }
 
-    static void UpdateFilter(string key, string prompt, Dictionary<string, object> filter)
+    private static void SearchForFlight()
+    {
+        Console.Clear();
+        var selection1 = 0;
+        Dictionary<string, object> filter = new Dictionary<string, object>();
+
+        do
+        {
+            Menus.SearchForFlightMenu();
+            int.TryParse(Console.ReadLine(), out selection1);
+
+            switch (selection1)
+            {
+                case 1:
+                    UpdateFilter<double>("Price", "Price", filter);
+                    break;
+                case 2:
+                    UpdateFilter<string>("DepartureCountry", "Departure Country", filter);
+                    break;
+                case 3:
+                    UpdateFilter<string>("DestinationCountry", "Destination Country", filter);
+                    break;
+                case 4:
+                    UpdateFilter<DateTime>("DepartureDate", "Departure Date (yyyy-MM-dd HH:mm:ss)", filter);
+                    break;
+                case 5:
+                    UpdateFilter<string>("DepartureAirport", "Departure Airport", filter);
+                    break;
+                case 6:
+                    UpdateFilter<string>("ArrivalAirport", "Arrival Airport", filter);
+                    break;
+                case 7:
+                    UpdateFilter<Enum>("FlightClass", "Flight Class", filter);
+                    break;
+                case 8:
+                    ViewFilteredFlights(filter);
+                    break;
+                case 9:
+                    filter = new Dictionary<string, object>();
+                    break;
+                case 10:
+                    break;
+                default:
+                    Log.InvalidInputMessage(
+                        "Invalid input. Please enter a number between 1 and 10.");
+                    break;
+            }
+
+            Console.ForegroundColor = ConsoleColor.Cyan;
+            Console.Write("Enter your selection: ");
+            Console.ResetColor();
+        } while (selection1 != 10);
+    }
+
+    private static void FilterBookings()
+    {
+        Console.Clear();
+        var selection1 = 0;
+        Dictionary<string, object> filter = new Dictionary<string, object>();
+
+        do
+        {
+            Menus.FilterBookingsMenu();
+            int.TryParse(Console.ReadLine(), out selection1);
+
+            switch (selection1)
+            {
+                case 1:
+                    UpdateFilter<double>("Flight.FlightId", "Flight ID", filter);
+                    break;
+                case 2:
+                    UpdateFilter<double>("Flight.Price", "Price", filter);
+                    break;
+                case 3:
+                    UpdateFilter<string>("Flight.DepartureCountry", "Departure Country", filter);
+                    break;
+                case 4:
+                    UpdateFilter<string>("Flight.DestinationCountry", "Destination Country", filter);
+                    break;
+                case 5:
+                    UpdateFilter<DateTime>("Flight.DepartureDate", "Departure Date (yyyy-MM-dd HH:mm:ss)", filter);
+                    break;
+                case 6:
+                    UpdateFilter<string>("Flight.DepartureAirport", "Departure Airport", filter);
+                    break;
+                case 7:
+                    UpdateFilter<string>("Flight.ArrivalAirport", "Arrival Airport", filter);
+                    break;
+                case 8:
+                    UpdateFilter<string>("Passenger.Id", "Passenger Id", filter);
+                    break;
+                case 9:
+                    UpdateFilter<Enum>("FlightClass", "Flight Class", filter);
+                    break;
+                case 10:
+                    ViewFilteredBookings(filter);
+                    break;
+                case 11:
+                    filter = new Dictionary<string, object>();
+                    break;
+                case 12:
+                    break;
+                default:
+                    Log.InvalidInputMessage(
+                        "Invalid input. Please enter a number between 1 and 12.");
+                    break;
+            }
+
+            Console.ForegroundColor = ConsoleColor.Cyan;
+            Console.Write("Enter your selection: ");
+            Console.ResetColor();
+        } while (selection1 != 12);
+    }
+
+    private static void UpdateFilter<T>(string key, string prompt, Dictionary<string, object> filter)
     {
         var value = EnterValue(prompt);
         if (!string.IsNullOrEmpty(value))
         {
-            if (!filter.ContainsKey(key))
-            {
-                filter.Add(key, value);
-            }
-            else
+            if (typeof(T) == typeof(string))
             {
                 filter[key] = value;
+            }
+            else if (typeof(T) == typeof(double) && double.TryParse(value, out double price))
+            {
+                if (ValidationService.IsValidValue(price, 0, 1000))
+                {
+                    filter[key] = price;
+                }
+                else
+                {
+                    Console.ForegroundColor = ConsoleColor.DarkRed;
+                    Console.WriteLine($"{price:C} is invalid price. Please try again.");
+                    Console.ResetColor();
+                }
+            }
+            else if (typeof(T) == typeof(int) && int.TryParse(value, out int id))
+            {
+                if (ValidationService.IsValidValue(id, 0, 1000))
+                {
+                    filter[key] = id;
+                }
+                else
+                {
+                    Console.ForegroundColor = ConsoleColor.DarkRed;
+                    Console.WriteLine($"{id} is invalid flight id. Please try again.");
+                    Console.ResetColor();
+                }
+            }
+            else if (typeof(T) == typeof(DateTime) && DateTime.TryParseExact(value, "yyyy-MM-dd HH:mm:ss", null,
+                         System.Globalization.DateTimeStyles.None, out DateTime parsedDateTime))
+            {
+                filter[key] = parsedDateTime;
+            }
+            else if (typeof(T) == typeof(Enum) && Enum.TryParse(value, true, out FlightClass flightClassValue))
+            {
+                filter[key] = flightClassValue;
             }
         }
     }
 
-    static void ViewFilteredFlights(Dictionary<string, object> filter)
-    {
-        List<Flight> flights = FlightService.SearchForFlight(filter);
-        Flight.ViewFlights(flights);
-    }
-
-    static string EnterValue(string prompt)
+    private static string EnterValue(string prompt)
     {
         Console.Write($"Enter {prompt}: ");
         return Console.ReadLine();
+    }
+
+    private static void ViewFilteredFlights(Dictionary<string, object> filter)
+    {
+        var flights = FlightService.SearchForFlight(filter);
+        Flight.ViewFlights(flights);
+    }
+
+    private static void ViewFilteredBookings(Dictionary<string, object> filter)
+    {
+        var bookings = BookingServices.FilterBookings(filter);
+        Bookings.ViewBookings(bookings);
     }
 }
