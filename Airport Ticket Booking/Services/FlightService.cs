@@ -46,11 +46,6 @@ public class FlightService
         return Main.Flights.FirstOrDefault(f => f.FlightId == flightId);
     }
 
-    public static Flight GetFlightByIdAndClass(int flightId, FlightClass flightClass)
-    {
-        return Main.Flights.FirstOrDefault(f => f.FlightId == flightId && f.FlightClass.Contains(flightClass));
-    }
-
     public static void GetFlights()
     {
         Console.WriteLine($"\nAvailable Flights -> {Main.Flights.Count}");
