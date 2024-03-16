@@ -1,4 +1,5 @@
-﻿using Airport_Ticket_Booking.Models;
+﻿using System.Configuration;
+using Airport_Ticket_Booking.Models;
 using Airport_Ticket_Booking.Services;
 using Microsoft.VisualBasic.FileIO;
 
@@ -6,10 +7,10 @@ namespace Airport_Ticket_Booking.DataAccess;
 
 public class BookingsRepository
 {
-    private static string filePath =
-        "C:\\Users\\shama\\RiderProjects\\Airport Ticket Booking\\Airport Ticket Booking\\Data\\bookings.csv";
+    private static string _filePath =
+        Helpers.FileHelper.ConcatPaths(ConfigurationManager.AppSettings.Get("DataFiles"), "bookings.csv");
 
-    public static List<Bookings> LoadBookingsList(string filePath)
+    private static List<Bookings> LoadBookingsList(string filePath)
     {
         List<Bookings> bookings = new List<Bookings>();
 
@@ -23,8 +24,7 @@ public class BookingsRepository
         {
             string[] fields = parser.ReadFields();
 
-            User passenger = UserRepository.GetPersonById(fields[0],
-                "C:\\Users\\shama\\RiderProjects\\Airport Ticket Booking\\Airport Ticket Booking\\Data\\users.csv");
+            User passenger = UserRepository.GetPersonById(fields[0]);
 
 
             Int32.TryParse(fields[1], out int flightId);
@@ -46,13 +46,11 @@ public class BookingsRepository
         {
             string dataLine = $"{pid},{fid}, {flightClass}";
 
-            using (StreamWriter writer =
-                   new StreamWriter(
-                       filePath,
-                       true))
-            {
-                writer.WriteLine(dataLine);
-            }
+            using StreamWriter writer =
+                new StreamWriter(
+                    _filePath,
+                    true);
+            writer.WriteLine(dataLine);
         }
         catch (Exception ex)
         {
@@ -66,7 +64,7 @@ public class BookingsRepository
 
         try
         {
-            string[] lines = File.ReadAllLines(filePath);
+            string[] lines = File.ReadAllLines(_filePath);
 
             foreach (string line in lines)
             {
@@ -102,7 +100,7 @@ public class BookingsRepository
             List<string> updatedLines = new List<string>();
             bool bookingRemoved = false;
 
-            string[] lines = File.ReadAllLines(filePath);
+            string[] lines = File.ReadAllLines(_filePath);
 
             foreach (string line in lines)
             {
@@ -124,7 +122,7 @@ public class BookingsRepository
                 updatedLines.Add(line);
             }
 
-            File.WriteAllLines(filePath, updatedLines);
+            File.WriteAllLines(_filePath, updatedLines);
 
             return bookingRemoved;
         }
@@ -134,4 +132,6 @@ public class BookingsRepository
             return false;
         }
     }
+
+    public static List<Bookings> GetBookings() => LoadBookingsList(_filePath);
 }
