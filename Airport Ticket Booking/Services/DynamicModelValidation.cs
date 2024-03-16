@@ -39,9 +39,9 @@ public class DynamicModelValidation
             return "Required";
         else if (attribute is RangeAttribute rangeAttribute)
             return $"Range ({rangeAttribute.Minimum}, {rangeAttribute.Maximum})";
-        else if (attribute is FutureDateAttributes)
+        else if (attribute is FutureDateValidationAttributes)
             return "Must be in the future";
-        else if (attribute is FlightClassValidatorAttribute)
+        else if (attribute is FlightClassValidationAttribute)
             return "Flight Class cannot be Unknown";
         else
             return attribute.GetType().Name;
