@@ -59,7 +59,8 @@ public class Menus
         Console.WriteLine("6. Arrival Airport");
         Console.WriteLine("7. Class");
         Console.WriteLine("8. Search");
-        Console.WriteLine("9. Exit");
+        Console.WriteLine("9. Clear Filter");
+        Console.WriteLine("10. Exit");
         Console.WriteLine("========================================");
         Console.Write("Enter your selection: ");
         Console.ResetColor();
@@ -105,8 +106,10 @@ public class Menus
         Console.WriteLine("6. Departure Airport");
         Console.WriteLine("7. Arrival Airport");
         Console.WriteLine("8. Passenger");
-        Console.WriteLine("10. Class");
-        Console.WriteLine("11. Exit");
+        Console.WriteLine("9. Class");
+        Console.WriteLine("10. Filter");
+        Console.WriteLine("11. Reset Filter");
+        Console.WriteLine("12. Exit");
         Console.WriteLine("========================================");
         Console.Write("Enter your selection: ");
         Console.ResetColor();
@@ -117,7 +120,6 @@ public class Menus
         Console.ForegroundColor = ConsoleColor.Cyan;
         Console.WriteLine("Batch Flight Upload\n\nPlease enter flights file full path: ");
         Console.ResetColor();
-        var option = Console.ReadLine();
     }
 
     public static void FlightClasses(List<FlightClass> availableClasses)
@@ -147,17 +149,5 @@ public class Menus
             default:
                 return "Unknown";
         }
-    }
-
-    public static void PersonalInfo()
-    {
-        Console.ForegroundColor = ConsoleColor.Cyan;
-        Console.WriteLine("Personal Info\n\nPlease choose one of the following options:");
-        Console.WriteLine("========================================");
-        Console.WriteLine("1. Full Name");
-        Console.WriteLine("2. Exit");
-        Console.WriteLine("========================================");
-        Console.Write("Enter your selection: ");
-        Console.ResetColor();
     }
 }
