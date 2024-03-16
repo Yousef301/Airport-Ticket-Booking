@@ -1,12 +1,16 @@
 ﻿using Airport_Ticket_Booking.Models;
 using Airport_Ticket_Booking.Services;
 using Microsoft.VisualBasic.FileIO;
+using ConfigurationManager = System.Configuration.ConfigurationManager;
 
 namespace Airport_Ticket_Booking.DataAccess;
 
 public class FlightsRepository
 {
-    public static List<Flight> LoadFlightsFromCsv(string filePath)
+    private static string _filePath =
+        Helpers.FileHelper.ConcatPaths(ConfigurationManager.AppSettings.Get("DataFiles"), "flights.csv");
+
+    private static List<Flight> LoadFlightsFromCsv(string filePath)
     {
         List<Flight> flights = new List<Flight>();
 
@@ -71,7 +75,7 @@ public class FlightsRepository
     }
 
 
-    public static List<FlightClass> ParseFlightClasses(string classString)
+    private static List<FlightClass> ParseFlightClasses(string classString)
     {
         string[] classNames = classString
             .Replace("[", "")
@@ -93,11 +97,7 @@ public class FlightsRepository
 
     public static void AddFlightsToTheFlightsFile(List<Flight> flights)
     {
-        string filePath =
-            "C:\\Users\\shama\\RiderProjects\\Airport Ticket Booking\\Airport Ticket Booking\\Data\\flights.csv";
-
-        using StreamWriter writer = File.AppendText(filePath);
-
+        using StreamWriter writer = File.AppendText(_filePath);
 
         foreach (var flight in flights)
         {
@@ -109,5 +109,13 @@ public class FlightsRepository
 
             writer.WriteLine(newRecord);
         }
+    }
+
+    public static List<Flight> GetFlights(string filePath)
+    {
+        var path = filePath.Equals("")
+            ? _filePath
+            : filePath;
+        return LoadFlightsFromCsv(path);
     }
 }

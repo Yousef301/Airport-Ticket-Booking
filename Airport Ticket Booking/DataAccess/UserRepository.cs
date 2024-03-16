@@ -1,13 +1,17 @@
-﻿using Airport_Ticket_Booking.Models;
+﻿using System.Configuration;
+using Airport_Ticket_Booking.Models;
 using Microsoft.VisualBasic.FileIO;
 
 namespace Airport_Ticket_Booking.DataAccess;
 
 public class UserRepository
 {
-    public static User GetPersonById(string id, string filePath)
+    private static string _filePath =
+        Helpers.FileHelper.ConcatPaths(ConfigurationManager.AppSettings.Get("DataFiles"), "users.csv");
+
+    public static User GetPersonById(string id)
     {
-        using TextFieldParser parser = new TextFieldParser(filePath);
+        using TextFieldParser parser = new TextFieldParser(_filePath);
         parser.TextFieldType = FieldType.Delimited;
         parser.SetDelimiters(",");
         parser.ReadLine();
