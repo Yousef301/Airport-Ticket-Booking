@@ -1,14 +1,20 @@
 ﻿using Airport_Ticket_Booking.DataAccess;
+using Airport_Ticket_Booking.Helpers;
 using Airport_Ticket_Booking.Models;
 using Airport_Ticket_Booking.Services;
+using Microsoft.Extensions.Configuration;
 
 namespace Airport_Ticket_Booking.UI;
 
 public class Main
 {
-    public static Dictionary<int, Flight> Flights = FlightsRepository.GetFlights("");
+    public static readonly CustomConfigurationManager
+        ConfigManager = new(
+            "C:\\Users\\shama\\RiderProjects\\Airport Ticket Booking\\Airport Ticket Booking\\AppSettings.json");
 
-    public static List<Bookings> AllBookings = BookingsRepository.GetBookings();
+    public static readonly Dictionary<int, Flight> Flights = FlightsRepository.GetFlights("");
+
+    public static readonly List<Bookings> AllBookings = BookingsRepository.GetBookings();
 
     public static void Run()
     {
