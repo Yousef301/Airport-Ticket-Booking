@@ -10,9 +10,9 @@ public class FlightsRepository
     private static string _filePath =
         Helpers.FileHelper.ConcatPaths(ConfigurationManager.AppSettings.Get("DataFiles"), "flights.csv");
 
-    private static List<Flight> LoadFlightsFromCsv(string filePath)
+    private static Dictionary<int, Flight> LoadFlightsFromCsv(string filePath)
     {
-        List<Flight> flights = new List<Flight>();
+        Dictionary<int, Flight> flights = new Dictionary<int, Flight>();
 
         try
         {
@@ -62,7 +62,7 @@ public class FlightsRepository
 
                 if (ValidationService.ValidateObject(flight))
                 {
-                    flights.Add(flight);
+                    flights.Add(flightId, flight); // Adding to dictionary with flight ID as key
                 }
             }
         }
@@ -95,11 +95,11 @@ public class FlightsRepository
         return flightClasses;
     }
 
-    public static void AddFlightsToTheFlightsFile(List<Flight> flights)
+    public static void AddFlightsToTheFlightsFile(Dictionary<int, Flight> flights)
     {
         using StreamWriter writer = File.AppendText(_filePath);
 
-        foreach (var flight in flights)
+        foreach (var flight in flights.Values)
         {
             var classes = "[" + string.Join("-", flight.FlightClass) + "]";
 
@@ -111,7 +111,7 @@ public class FlightsRepository
         }
     }
 
-    public static List<Flight> GetFlights(string filePath)
+    public static Dictionary<int, Flight> GetFlights(string filePath)
     {
         var path = filePath.Equals("")
             ? _filePath

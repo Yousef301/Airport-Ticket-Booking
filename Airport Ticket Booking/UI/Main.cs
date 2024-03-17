@@ -6,7 +6,7 @@ namespace Airport_Ticket_Booking.UI;
 
 public class Main
 {
-    public static List<Flight> Flights = FlightsRepository.GetFlights("");
+    public static Dictionary<int, Flight> Flights = FlightsRepository.GetFlights("");
 
     public static List<Bookings> AllBookings = BookingsRepository.GetBookings();
 

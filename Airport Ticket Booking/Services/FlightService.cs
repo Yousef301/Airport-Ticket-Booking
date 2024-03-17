@@ -7,7 +7,7 @@ public class FlightService
 {
     public static List<Flight> SearchForFlight(Dictionary<string, object> parameters)
     {
-        var filteredFlights = Main.Flights.Where(flight =>
+        var filteredFlights = Main.Flights.Values.Where(flight =>
         {
             foreach (var kvp in parameters)
             {
@@ -43,7 +43,7 @@ public class FlightService
 
     public static Flight GetFlightById(int flightId)
     {
-        return Main.Flights.FirstOrDefault(f => f.FlightId == flightId);
+        return Main.Flights.Values.FirstOrDefault(f => f.FlightId == flightId);
     }
 
     public static void GetFlights()
