@@ -20,7 +20,7 @@ public class Flight
     public string DestinationCountry { get; set; }
 
     [Required(ErrorMessage = "Departure Date is required.")]
-    [FutureDateValidationAttributes(ErrorMessage = "Departure Date must be in the future.")]
+    [FutureDateValidation(ErrorMessage = "Departure Date must be in the future.")]
     public DateTime DepartureDate { get; set; }
 
     [Required(ErrorMessage = "Departure Airport is required.")]
