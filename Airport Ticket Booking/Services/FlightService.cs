@@ -11,27 +11,9 @@ public class FlightService
         {
             foreach (var kvp in parameters)
             {
-                var property = typeof(Flight).GetProperty(kvp.Key);
-
-                if (property != null)
+                if (!MatchFlightProperty(flight, kvp.Key, kvp.Value))
                 {
-                    var value = property.GetValue(flight);
-
-                    if (property.PropertyType == typeof(List<FlightClass>))
-                    {
-                        var flightClassList = value as List<FlightClass>;
-                        if (flightClassList == null || !flightClassList.Contains((FlightClass)kvp.Value))
-                        {
-                            return false;
-                        }
-                    }
-                    else
-                    {
-                        if (!value.Equals(kvp.Value))
-                        {
-                            return false;
-                        }
-                    }
+                    return false;
                 }
             }
 
@@ -41,18 +23,50 @@ public class FlightService
         return filteredFlights;
     }
 
+    private static bool MatchFlightProperty(Flight flight, string propertyName, object expectedValue)
+    {
+        var property = typeof(Flight).GetProperty(propertyName);
+
+        if (property != null)
+        {
+            var value = property.GetValue(flight);
+
+            if (property.PropertyType == typeof(List<FlightClass>))
+            {
+                var flightClassList = value as List<FlightClass>;
+                if (flightClassList == null || !flightClassList.Contains((FlightClass)expectedValue))
+                {
+                    return false;
+                }
+            }
+            else
+            {
+                if (!value.Equals(expectedValue))
+                {
+                    return false;
+                }
+            }
+
+            return true;
+        }
+
+        return false;
+    }
+
     public static Flight GetFlightById(int flightId)
     {
         return Main.Flights.Values.FirstOrDefault(f => f.FlightId == flightId);
     }
 
-    public static void GetFlights()
+    public static void ListAvailableFlights()
     {
-        Console.WriteLine($"\nAvailable Flights -> {Main.Flights.Count}");
+        Console.WriteLine($"Available Flights -> {Main.Flights.Count}");
+
         foreach (var flight in Main.Flights)
         {
             Console.WriteLine("------------------------------------------");
-            Console.WriteLine(flight);
+            Console.WriteLine($"Flight ID: {flight.Key}");
+            Console.WriteLine($"Flight Details: {flight.Value}");
         }
     }
 }

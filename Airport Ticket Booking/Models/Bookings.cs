@@ -25,6 +25,6 @@ public class Bookings
     public override string ToString()
     {
         return
-            $"Passenger name -> {Passenger.FullName}\nPassenger ID: {Passenger.Id}\nFlight Details:\n{Flight}\nFlight Class -> {FlightClass}\n";
+            $"Passenger name -> {Passenger.FullName}\nPassenger ID: {Passenger.Id}\nFlight Details:\n{Flight}Flight Class -> {FlightClass}\n";
     }
 }

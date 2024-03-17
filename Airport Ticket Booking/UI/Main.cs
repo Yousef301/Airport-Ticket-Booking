@@ -63,7 +63,7 @@ public class Main
                                     switch (selection)
                                     {
                                         case "1":
-                                            FlightService.GetFlights();
+                                            FlightService.ListAvailableFlights();
                                             break;
                                         case "2":
                                             Console.Write("Enter flight id: ");

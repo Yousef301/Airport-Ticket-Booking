@@ -7,7 +7,7 @@ namespace Airport_Ticket_Booking.DataAccess;
 
 public class FlightsRepository
 {
-    private static string _filePath =
+    private static readonly string FilePath =
         Helpers.FileHelper.ConcatPaths(ConfigurationManager.AppSettings.Get("DataFiles"), "flights.csv");
 
     private static Dictionary<int, Flight> LoadFlightsFromCsv(string filePath)
@@ -62,7 +62,7 @@ public class FlightsRepository
 
                 if (ValidationService.ValidateObject(flight))
                 {
-                    flights.Add(flightId, flight); // Adding to dictionary with flight ID as key
+                    flights.Add(flightId, flight);
                 }
             }
         }
@@ -97,7 +97,7 @@ public class FlightsRepository
 
     public static void AddFlightsToTheFlightsFile(Dictionary<int, Flight> flights)
     {
-        using StreamWriter writer = File.AppendText(_filePath);
+        using StreamWriter writer = File.AppendText(FilePath);
 
         foreach (var flight in flights.Values)
         {
@@ -114,7 +114,7 @@ public class FlightsRepository
     public static Dictionary<int, Flight> GetFlights(string filePath)
     {
         var path = filePath.Equals("")
-            ? _filePath
+            ? FilePath
             : filePath;
         return LoadFlightsFromCsv(path);
     }

@@ -14,8 +14,9 @@ public class DynamicModelValidation
         foreach (PropertyInfo property in properties)
         {
             Console.WriteLine("========================================");
-            Console.WriteLine(
-                $"{property.Name}:\nType: {GetPropertyType(property)}\nConstraint: {GetValidationConstraints(property)}");
+            Console.WriteLine($"{property.Name}:");
+            Console.WriteLine($"Type: {GetPropertyType(property)}");
+            Console.WriteLine($"Constraint: {GetValidationConstraints(property)}");
             Console.WriteLine("========================================");
         }
 
@@ -35,15 +36,18 @@ public class DynamicModelValidation
 
     private static string GetConstraintDescription(ValidationAttribute attribute)
     {
-        if (attribute is RequiredAttribute)
-            return "Required";
-        else if (attribute is RangeAttribute rangeAttribute)
-            return $"Range ({rangeAttribute.Minimum}, {rangeAttribute.Maximum})";
-        else if (attribute is FutureDateValidationAttributes)
-            return "Must be in the future";
-        else if (attribute is FlightClassValidationAttribute)
-            return "Flight Class cannot be Unknown";
-        else
-            return attribute.GetType().Name;
+        switch (attribute)
+        {
+            case RequiredAttribute _:
+                return "Required";
+            case RangeAttribute rangeAttribute:
+                return $"Range ({rangeAttribute.Minimum}, {rangeAttribute.Maximum})";
+            case FutureDateValidationAttributes _:
+                return "Must be in the future";
+            case FlightClassValidationAttribute _:
+                return "Flight Class cannot be Unknown";
+            default:
+                return attribute.GetType().Name;
+        }
     }
 }

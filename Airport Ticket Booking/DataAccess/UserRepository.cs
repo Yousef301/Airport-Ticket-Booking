@@ -11,28 +11,34 @@ public class UserRepository
 
     public static User GetPersonById(string id)
     {
-        using TextFieldParser parser = new TextFieldParser(_filePath);
-        parser.TextFieldType = FieldType.Delimited;
-        parser.SetDelimiters(",");
-        parser.ReadLine();
-
-        while (!parser.EndOfData)
+        try
         {
-            string[] parts = parser.ReadFields();
+            using TextFieldParser parser = new TextFieldParser(_filePath);
+            parser.TextFieldType = FieldType.Delimited;
+            parser.SetDelimiters(",");
+            parser.ReadLine();
 
-            if (parts[0].StartsWith("P", StringComparison.OrdinalIgnoreCase) &&
-                parts[0].Equals(id, StringComparison.OrdinalIgnoreCase))
+            while (!parser.EndOfData)
             {
-                return ParsePassenger(parts);
-            }
+                string[] parts = parser.ReadFields();
 
-            if (parts[0].StartsWith("M", StringComparison.OrdinalIgnoreCase) &&
-                parts[0].Equals(id, StringComparison.OrdinalIgnoreCase))
-            {
-                return ParseManager(parts);
+                if (parts[0].StartsWith("P", StringComparison.OrdinalIgnoreCase) &&
+                    parts[0].Equals(id, StringComparison.OrdinalIgnoreCase))
+                {
+                    return ParsePassenger(parts);
+                }
+
+                if (parts[0].StartsWith("M", StringComparison.OrdinalIgnoreCase) &&
+                    parts[0].Equals(id, StringComparison.OrdinalIgnoreCase))
+                {
+                    return ParseManager(parts);
+                }
             }
         }
-
+        catch (FileNotFoundException ex)
+        {
+            Console.WriteLine("File not found: " + ex.Message);
+        }
         return null;
     }
 

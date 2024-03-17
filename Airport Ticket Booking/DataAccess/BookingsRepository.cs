@@ -7,32 +7,65 @@ namespace Airport_Ticket_Booking.DataAccess;
 
 public class BookingsRepository
 {
-    private static string _filePath =
+    private static readonly string FilePath =
         Helpers.FileHelper.ConcatPaths(ConfigurationManager.AppSettings.Get("DataFiles"), "bookings.csv");
 
     private static List<Bookings> LoadBookingsList(string filePath)
     {
         List<Bookings> bookings = new List<Bookings>();
 
-        using TextFieldParser parser = new TextFieldParser(filePath);
-        parser.TextFieldType = FieldType.Delimited;
-        parser.SetDelimiters(",");
-
-        parser.ReadLine();
-
-        while (!parser.EndOfData)
+        try
         {
-            string[] fields = parser.ReadFields();
+            using (TextFieldParser parser = new TextFieldParser(filePath))
+            {
+                parser.TextFieldType = FieldType.Delimited;
+                parser.SetDelimiters(",");
 
-            User passenger = UserRepository.GetPersonById(fields[0]);
+                parser.ReadLine();
 
+                while (!parser.EndOfData)
+                {
+                    string[] fields = parser.ReadFields();
 
-            Int32.TryParse(fields[1], out int flightId);
-            Enum.TryParse(fields[2], true, out FlightClass flightClassValue);
+                    if (fields.Length < 3)
+                    {
+                        Console.WriteLine("Invalid data format: Insufficient fields.");
+                        continue;
+                    }
 
-            Flight flight = FlightService.GetFlightById(flightId);
+                    if (!Int32.TryParse(fields[1], out int flightId))
+                    {
+                        Console.WriteLine($"Invalid flight ID: {fields[1]}");
+                        continue;
+                    }
 
-            bookings.Add(new Bookings((Passenger)passenger, flight, flightClassValue));
+                    if (!Enum.TryParse(fields[2], true, out FlightClass flightClassValue))
+                    {
+                        Console.WriteLine($"Invalid flight class: {fields[2]}");
+                        continue;
+                    }
+
+                    User passenger = UserRepository.GetPersonById(fields[0]);
+                    if (passenger == null)
+                    {
+                        Console.WriteLine($"Passenger not found with ID: {fields[0]}");
+                        continue;
+                    }
+
+                    Flight flight = FlightService.GetFlightById(flightId);
+                    if (flight == null)
+                    {
+                        Console.WriteLine($"Flight not found with ID: {flightId}");
+                        continue;
+                    }
+
+                    bookings.Add(new Bookings((Passenger)passenger, flight, flightClassValue));
+                }
+            }
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"An error occurred while loading bookings: {ex.Message}");
         }
 
         return bookings;
@@ -48,7 +81,7 @@ public class BookingsRepository
 
             using StreamWriter writer =
                 new StreamWriter(
-                    _filePath,
+                    FilePath,
                     true);
             writer.WriteLine(dataLine);
         }
@@ -64,7 +97,7 @@ public class BookingsRepository
 
         try
         {
-            string[] lines = File.ReadAllLines(_filePath);
+            string[] lines = File.ReadAllLines(FilePath);
 
             foreach (string line in lines)
             {
@@ -100,7 +133,7 @@ public class BookingsRepository
             List<string> updatedLines = new List<string>();
             bool bookingRemoved = false;
 
-            string[] lines = File.ReadAllLines(_filePath);
+            string[] lines = File.ReadAllLines(FilePath);
 
             foreach (string line in lines)
             {
@@ -122,7 +155,7 @@ public class BookingsRepository
                 updatedLines.Add(line);
             }
 
-            File.WriteAllLines(_filePath, updatedLines);
+            File.WriteAllLines(FilePath, updatedLines);
 
             return bookingRemoved;
         }
@@ -133,5 +166,5 @@ public class BookingsRepository
         }
     }
 
-    public static List<Bookings> GetBookings() => LoadBookingsList(_filePath);
+    public static List<Bookings> GetBookings() => LoadBookingsList(FilePath);
 }
