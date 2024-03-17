@@ -42,7 +42,7 @@ public class DynamicModelValidation
                 return "Required";
             case RangeAttribute rangeAttribute:
                 return $"Range ({rangeAttribute.Minimum}, {rangeAttribute.Maximum})";
-            case FutureDateValidationAttributes _:
+            case FutureDateValidationAttribute _:
                 return "Must be in the future";
             case FlightClassValidationAttribute _:
                 return "Flight Class cannot be Unknown";
