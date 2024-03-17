@@ -1,6 +1,7 @@
 ﻿using System.Configuration;
 using Airport_Ticket_Booking.Models;
 using Airport_Ticket_Booking.Services;
+using Airport_Ticket_Booking.UI;
 using Microsoft.VisualBasic.FileIO;
 
 namespace Airport_Ticket_Booking.DataAccess;
@@ -8,7 +9,7 @@ namespace Airport_Ticket_Booking.DataAccess;
 public class BookingsRepository
 {
     private static readonly string FilePath =
-        Helpers.FileHelper.ConcatPaths(ConfigurationManager.AppSettings.Get("DataFiles"), "bookings.csv");
+        Helpers.FileHelper.ConcatPaths(Main.ConfigManager.GetValue("DataFiles"), "bookings.csv");
 
     private static List<Bookings> LoadBookingsList(string filePath)
     {

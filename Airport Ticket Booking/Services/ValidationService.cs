@@ -1,6 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.Configuration;
 using Airport_Ticket_Booking.Models;
+using Airport_Ticket_Booking.UI;
 
 namespace Airport_Ticket_Booking.Services;
 
@@ -17,8 +18,8 @@ public class ValidationService
         {
             using StreamWriter writer =
                 new StreamWriter(
-                    Helpers.FileHelper.ConcatPaths(ConfigurationManager.AppSettings.Get("LogsDirectory"),
-                        "LoadedFlightsLog.csv"),
+                    Helpers.FileHelper.ConcatPaths(Main.ConfigManager.GetValue("LogsDirectory"),
+                        "LoadedFlightsLog.txt"),
                     true);
             if (typeof(T) == typeof(Flight))
             {

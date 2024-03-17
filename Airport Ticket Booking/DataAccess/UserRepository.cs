@@ -1,5 +1,6 @@
 ﻿using System.Configuration;
 using Airport_Ticket_Booking.Models;
+using Airport_Ticket_Booking.UI;
 using Microsoft.VisualBasic.FileIO;
 
 namespace Airport_Ticket_Booking.DataAccess;
@@ -7,7 +8,7 @@ namespace Airport_Ticket_Booking.DataAccess;
 public class UserRepository
 {
     private static string _filePath =
-        Helpers.FileHelper.ConcatPaths(ConfigurationManager.AppSettings.Get("DataFiles"), "users.csv");
+        Helpers.FileHelper.ConcatPaths(Main.ConfigManager.GetValue("DataFiles"), "users.csv");
 
     public static User GetPersonById(string id)
     {
