@@ -4,7 +4,7 @@ using Airport_Ticket_Booking.Models;
 namespace Airport_Ticket_Booking.CustomAttribute;
 
 [AttributeUsage(AttributeTargets.Property | AttributeTargets.Field | AttributeTargets.Parameter)]
-public class FutureDateValidationAttributes : ValidationAttribute
+public class FutureDateValidationAttribute : ValidationAttribute
 {
     public override bool IsValid(object value)
     {
