@@ -1,5 +1,4 @@
-﻿using System.Configuration;
-using Airport_Ticket_Booking.Models;
+﻿using Airport_Ticket_Booking.Models;
 using Airport_Ticket_Booking.UI;
 using Microsoft.VisualBasic.FileIO;
 

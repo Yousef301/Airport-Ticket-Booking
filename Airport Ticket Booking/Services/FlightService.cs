@@ -53,7 +53,7 @@ public class FlightService
         return false;
     }
 
-    public static Flight GetFlightById(int flightId)
+    public static Flight? GetFlightById(int flightId)
     {
         return Main.Flights.Values.FirstOrDefault(f => f.FlightId == flightId);
     }
