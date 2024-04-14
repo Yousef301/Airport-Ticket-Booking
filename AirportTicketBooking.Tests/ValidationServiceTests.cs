@@ -15,6 +15,6 @@ public class ValidationServiceTests
         var isValid = ValidationService.IsValidValue(value, min, max);
 
         // Assert
-        isValid.Should().BeTrue();
+        isValid.Should().BeFalse();
     }
 }
