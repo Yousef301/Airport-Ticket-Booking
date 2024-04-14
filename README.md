@@ -37,4 +37,4 @@ This is a .NET console application designed to facilitate flight ticket bookings
 
 ## Note:
 
-When cloning the repository, ensure that you update the value of the 'DataFiles' key in the 'App.config' file to specify the directory where the data files are saved.
+When cloning the repository, ensure that you update the value of the 'DataFiles' and 'LogsDirectory' keys in the 'AppSettings.json' file to specify the directory where the data files are saved.
